@@ -14,29 +14,33 @@ attendeesRouter.post("/", async(req,res,next) => {
         })
         await writeAttendees(attDB)
 
-        try {
-            sgMail.setApiKey(process.eventNames.SENDGRID_API)
-
-            const msg = {
-                to: req.body.Email,
-                from: "anothergamer69@gmail.com",
-                subject: "You bastard",
-                text: "sucky sucky bimbaki!",
-            }
-
-            await sgMail.send(msg)
-            res.send("EMAIL YEETED")
-
-        } catch (error) {
-            console.log(error)
-            next(error)
+        
+            
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+        //console.log(sgMail)
+        const msg = {
+            to: req.body.Email,
+            from: "anothergamer69@gmail.com",
+            subject: "You nice and gentle guy",
+            html: "<strong>really nice!</strong>"
         }
+
+        
+        sgMail.send(msg).then ( () => 
+            res.send("EMAIL YEETED")
+        )
+
+     // res.status(204).send()
         
 
     } catch (error) {
         console.log(error)
         next(error)
     }
+})
+
+attendeesRouter.get("/test", (req,res,next) => {
+    res.status(200).send("test attendees working")
 })
 
 
